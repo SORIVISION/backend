@@ -2,6 +2,10 @@ import requests
 import os
 
 async def get_tts(context) :
+    """
+    Input : context (string)
+    Output : HTTP response code, mp3 binary data
+    """
 
     speaker = "nara"
     speed = "0"
