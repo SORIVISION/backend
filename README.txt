@@ -8,4 +8,4 @@
 /tests              # 테스트 코드
 
 main.py             # app
-secrets.json        # API KEY 등 중요 사항
+.env                # API KEY 등 중요 환경변수, 설정
