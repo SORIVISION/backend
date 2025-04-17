@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from models.client_models import ClientCreate, ClientResponse
 from services.client_services import ClientService
 
-router = APIRouter(prefix="/api/v1/client", tags=["client"])
+router = APIRouter(tags=["client"])
 
 @router.post("/login", 
     response_model=ClientResponse,
