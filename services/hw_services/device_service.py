@@ -25,6 +25,22 @@ async def create_content(device_ref, device_id : str, image_url :str):
     })
     return content_ref
 
+#2-2. 사용자 프롬프트용 contents 문서 생성
+async def create_user_qa_content(device_ref, device_id: str, 
+                                image_url : str, prompt: str, ocr_result: str):
+    content_ref = device_ref.collection("contents").document()
+    content_ref.set({
+        "device_id": device_id,
+        "image_url": image_url,
+        "question_text": prompt,
+        "ocr_result": ocr_result,
+        "gpt_response": "",
+        "is_emergency": False,
+        "created_at": datetime.utcnow().isoformat()
+    })
+    return content_ref
+
+
 #3. GPT 응답을 Firebase로 저장
 async def save_description_to_firestore(content_ref, question_text: str, gpt_response: str, is_emergency: bool):
     content_ref.update({

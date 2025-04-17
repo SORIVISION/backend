@@ -5,6 +5,8 @@ from services.hw_services.device_service import get_device_by_id, create_content
 from services.hw_services.storage_service import upload_image_to_firebase
 from services.hw_services.auto_describe_service import generate_auto_description
 
+from services.hw_services.user_qa_service import handle_user_prompt
+
 router = APIRouter(tags=["Hardware"])
 
 @router.post("/auto_describe")
@@ -36,4 +38,22 @@ async def auto_describe(device_id : str = Form(...), image : UploadFile = File(.
         content = io.BytesIO(tts_binary),
         media_type="audio/mpeg",
         headers={"Content-Disposition" : "inline; filename = description.mp3"}
+    )
+
+
+@router.post("/user_qa")
+async def user_prompt_qa(
+    device_id: str = Form(...),
+    prompt: str = Form(...),
+    image_url: str = Form(...)
+):
+    """
+    사용자 프롬프트 기반 질문 응답 및 음성 생성
+    """
+    tts_binary = await handle_user_prompt(device_id, image_url, prompt)
+
+    return StreamingResponse(
+        content=io.BytesIO(tts_binary),
+        media_type="audio/mpeg",
+        headers={"Content-Disposition": "inline; filename=description.mp3"}
     )
