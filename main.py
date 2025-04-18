@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+
+# "/ap1/v1" 아래 모든 라우터 등록
 app.include_router(v1, prefix="/api/v1")
 
 if __name__ == "__main__" :
