@@ -1,6 +1,7 @@
 from core.firebase import db
 from fastapi import HTTPException
 from datetime import datetime
+from typing import Optional
 
 #1. 디바이스 문서 참조 얻기
 async def get_device_by_id(device_id : str):
@@ -12,37 +13,33 @@ async def get_device_by_id(device_id : str):
     
     return docs_list[0].reference
 
-#2. contents 문서 생성 ( 이미지 업로드 후 호출)
-async def create_content(device_ref, device_id : str, image_url :str):
+#2. contents 문서 생성 (상황설명문/ 사용자 프롬프트 공통 )
+async def create_content(
+        device_ref, 
+        device_id : str, 
+        image_url :str,
+        question_text : Optional[str] = "",
+        gpt_response : Optional[str] = "",
+        is_emergency : bool = False
+):
     content_ref = device_ref.collection("contents").document()
     content_ref.set({
         "device_id": device_id,
         "image_url": image_url,
         "created_at": datetime.utcnow().isoformat(),
-        "question_text": "",
-        "gpt_response": "",
-        "is_emergency": False
+        "question_text": question_text,
+        "gpt_response": gpt_response,
+        "is_emergency": is_emergency
     })
     return content_ref
-
-#2-2. 사용자 프롬프트용 contents 문서 생성
-async def create_user_qa_content(device_ref, device_id: str, 
-                                image_url : str, prompt: str, ocr_result: str):
-    content_ref = device_ref.collection("contents").document()
-    content_ref.set({
-        "device_id": device_id,
-        "image_url": image_url,
-        "question_text": prompt,
-        "ocr_result": ocr_result,
-        "gpt_response": "",
-        "is_emergency": False,
-        "created_at": datetime.utcnow().isoformat()
-    })
-    return content_ref
-
 
 #3. GPT 응답을 Firebase로 저장
-async def save_description_to_firestore(content_ref, question_text: str, gpt_response: str, is_emergency: bool):
+async def save_description_to_firestore(
+        content_ref, 
+        question_text: str, 
+        gpt_response: str, 
+        is_emergency: bool
+):
     content_ref.update({
         "question_text": question_text,
         "gpt_response": gpt_response,

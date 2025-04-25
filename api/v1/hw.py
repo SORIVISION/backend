@@ -26,13 +26,9 @@ async def auto_describe(device_id : str = Form(...), image : UploadFile = File(.
     gpt_response = "이 이미지는 예시 이미지입니다" # <<-- 실제 gpt 연결 시 대체
     await save_description_to_firestore(content_ref, question, gpt_response, is_emergency=False)
 
-    
     #5. TTS 생성( 더미 )
     tts_binary = await generate_auto_description(device_ref, device_id, image_url)
-
-    print(f"[DEBUG] tts_binary type: {type(tts_binary)}")
-    print(f"[DEBUG] tts_binary preview: {tts_binary[:10] if isinstance(tts_binary, bytes) else tts_binary}")
-
+    
     #6. 응답 반환
     return StreamingResponse(
         content = io.BytesIO(tts_binary),
@@ -45,11 +41,15 @@ async def auto_describe(device_id : str = Form(...), image : UploadFile = File(.
 async def user_prompt_qa(
     device_id: str = Form(...),
     prompt: str = Form(...),
-    image_url: str = Form(...)
+    image: UploadFile = File(...)
 ):
     """
     사용자 프롬프트 기반 질문 응답 및 음성 생성
     """
+
+    # Firebase Storage에 업로드하여 url 받기
+    image_url = await upload_image_to_firebase(image)
+
     tts_binary = await handle_user_prompt(device_id, image_url, prompt)
 
     return StreamingResponse(
