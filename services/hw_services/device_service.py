@@ -30,7 +30,9 @@ async def create_content(
         "question_text": question_text,
         "gpt_response": gpt_response,
         "is_emergency": is_emergency
-    })
+    })      
+    print(f"[DEBUG] Writing to: {device_ref.path}/contents")
+    print(f"[DEBUG] Data: {image_url}, {question_text}")
     return content_ref
 
 #3. GPT 응답을 Firebase로 저장
