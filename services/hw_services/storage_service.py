@@ -5,7 +5,7 @@ async def upload_image_to_firebase(image_file) -> str:
     """
     이미지 파일을 firebase Storage에 업로드하고 공개 URL로 변환
     """
-    filename = f"images/{uuid.uuid4()}.jpg"
+    filename = f"images/{uuid.uuid4()}.png" # .png 확장자 파일로 고정. 4.27 정수영 수정
     blob = bucket.blob(filename)
 
     # 이미지 파일의 내용을 읽어서 업로드

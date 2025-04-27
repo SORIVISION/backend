@@ -6,7 +6,7 @@ from services.hw_services.storage_service import upload_image_to_firebase
 from services.hw_services.auto_describe_service import generate_auto_description
 from services.hw_services.emergency_service import create_emergency
 from typing import Dict
-
+from services.hw_services.emergency_img_service import handle_emergency_image
 
 
 router = APIRouter(tags=["Hardware"])
@@ -59,3 +59,24 @@ async def get_emergency_id(request: Dict[str, str] = Body(...)):
             "status": "error",
             "message": str(e)
         }
+
+
+@router.post("/emergency_img")
+async def emergency_img(
+    device_id: str = Form(...),
+    emergency_id: str = Form(...),
+    image: UploadFile = File(...)
+):
+    """
+    비상 상황 이미지 전송 및 contents 저장 API
+    """
+    image_url = await upload_image_to_firebase(image)
+
+    final_emergency_id = await handle_emergency_image(device_id, emergency_id, image_url)
+
+    return {
+        "status": "success",
+        "emergency_id": final_emergency_id
+    }
+        
+        
