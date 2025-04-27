@@ -9,8 +9,10 @@ async def upload_image_to_firebase(image_file) -> str:
     blob = bucket.blob(filename)
 
     # 이미지 파일의 내용을 읽어서 업로드
-    blob.upload_from_file(image_file.file, 
-                        content_type=image_file.content_type)
+    blob.upload_from_file(
+        image_file.file,
+        content_type="image/png"
+    )
 
     # URL 접근 허용
     blob.make_public()
