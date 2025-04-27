@@ -18,8 +18,6 @@ async def create_content(
         device_ref, 
         device_id : str, 
         image_url :str,
-        question_text : Optional[str] = "",
-        gpt_response : Optional[str] = "",
         is_emergency : bool = False
 ):
     content_ref = device_ref.collection("contents").document()
@@ -27,12 +25,10 @@ async def create_content(
         "device_id": device_id,
         "image_url": image_url,
         "created_at": datetime.utcnow().isoformat(),
-        "question_text": question_text,
-        "gpt_response": gpt_response,
+        "question_text": "",
+        "gpt_response": "",
         "is_emergency": is_emergency
-    })      
-    print(f"[DEBUG] Writing to: {device_ref.path}/contents")
-    print(f"[DEBUG] Data: {image_url}, {question_text}")
+    })
     return content_ref
 
 #3. GPT 응답을 Firebase로 저장

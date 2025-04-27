@@ -1,4 +1,5 @@
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, Body
+from typing import Dict
 from fastapi.responses import StreamingResponse
 from fastapi.responses import JSONResponse
 import io
@@ -9,6 +10,8 @@ from services.hw_services.storage_service import upload_image_to_firebase
 from services.hw_services.auto_describe_service import generate_auto_description
 from services.hw_services.user_qa_service import handle_user_prompt
 from services.hw_services.gps_service import save_gps_location
+from services.hw_services.emergency_service import create_emergency
+from services.hw_services.emergency_img_service import handle_emergency_image
 
 router = APIRouter(tags=["Hardware"])
 
@@ -75,3 +78,43 @@ async def post_gps_location(
     await save_gps_location(device_id, lat, lon)
 
     return JSONResponse(content={"status": "success"})
+        headers={"Content-Disposition" : "inline; filename = description.mp3"}
+    )
+
+@router.post("/get_emergency_id")
+async def get_emergency_id(request: Dict[str, str] = Body(...)):
+    device_id = request.get("device_id")
+    if not device_id:
+        return {"status": "error", "message": "device_id is required"}
+    
+    try:
+        emergency_id = await create_emergency(device_id)
+        return {
+            "status": "success",
+            "emergency_id": emergency_id
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
+
+@router.post("/emergency_img")
+async def emergency_img(
+    device_id: str = Form(...),
+    emergency_id: str = Form(...),
+    image: UploadFile = File(...)
+):
+    """
+    비상 상황 이미지 전송 및 contents 저장 API
+    """
+    image_url = await upload_image_to_firebase(image)
+
+    final_emergency_id = await handle_emergency_image(device_id, emergency_id, image_url)
+
+    return {
+        "status": "success",
+        "emergency_id": final_emergency_id
+    }
+        
