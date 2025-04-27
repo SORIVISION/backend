@@ -9,11 +9,12 @@ db = core.firebase.db  # core에서 생성한 Firestore 클라이언트 사용
 def create_dummy_content():
     contents_ref = db.collection("devices").document("yR74URDoRqdg2xvrLhiV").collection("contents")
     dummy_data = {
-        "device_id": "test_device",
-        "guardian_name": "홍길동",
-        "guardian_phone": "010-1234-5678",
-        "user_name": "테스트유저",
         "created_at": datetime.utcnow(),
+        "gpt_response": "that is sakura tree",
+        "image_url": "2525",
+        "is_emergency": False, # 더미 데이터 생성 시 False/True 설정 / 
+        "location_id": "jAtxAVZwkikJXbWC9LXV",
+        "question_text": "what is that tree?"
     }
     doc_ref = contents_ref.document()
     doc_ref.set(dummy_data)
@@ -26,7 +27,8 @@ def test_create_dummy_content():
     doc = db.collection("devices").document("yR74URDoRqdg2xvrLhiV").collection("contents").document(content_id).get()
     assert doc.exists
     data = doc.to_dict()
-    assert data["device_id"] == "test_device"
-    assert data["guardian_name"] == "홍길동"
-    assert data["guardian_phone"] == "010-1234-5678"
-    assert data["user_name"] == "테스트유저"
+    assert data["gpt_response"] == "that is sakura tree"
+    assert data["image_url"] == "2525"
+    assert data["is_emergency"] is False # 더미 데이터 생성 시 False/True 설정 / 위의 함수와 동일하게 설정
+    assert data["location_id"] == "jAtxAVZwkikJXbWC9LXV"
+    assert data["question_text"] == "what is that tree?"
