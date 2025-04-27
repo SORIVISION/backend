@@ -16,7 +16,7 @@ async def create_emergency(device_id: str) -> str:
     if not device_doc:
         raise ValueError(f"Device with ID {device_id} not found")
 
-    device_ref = device_doc.reference  # <- 이 문서 경로를 기반으로 emergency 저장
+    device_ref = device_doc.reference  # <- 디바이스 문서
 
     # 2. locations에서 최신 recorded_at 문서 찾기
     locations_ref = device_ref.collection("locations")
@@ -31,10 +31,19 @@ async def create_emergency(device_id: str) -> str:
     if not location_id:
         raise ValueError("최근 위치 정보가 존재하지 않습니다.")
 
-    # 3. emergency 서브컬렉션에 저장 (← 여기 핵심)
+    # ✅ 3. contents에서 is_emergency=True인 최근 5개 문서 ID 가져오기
+    contents_ref = device_ref.collection("contents")
+    emergency_contents_query = contents_ref.where("is_emergency", "==", True).order_by("created_at", direction=firestore.Query.DESCENDING).limit(5)
+    emergency_contents_docs = emergency_contents_query.stream()
+
+    contents_id_list = []
+    for doc in emergency_contents_docs:
+        contents_id_list.append(doc.id)
+
+    # 4. emergency 서브컬렉션에 저장
     emergency_data = {
         "triggered_at": datetime.utcnow(),
-        "contents_id": [],
+        "contents_id": contents_id_list,
         "location_id": location_id
     }
 
