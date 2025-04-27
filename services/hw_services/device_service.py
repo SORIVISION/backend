@@ -12,8 +12,8 @@ async def get_device_by_id(device_id : str):
     
     return docs_list[0].reference
 
-#2. contents 문서 생성 ( 이미지 업로드 후 호출)
-async def create_content(device_ref, device_id : str, image_url :str):
+#2. contents 문서 생성 ( 이미지 업로드 후 호출) # 기본값은 False/ 비상 상황 이미지 업로드 시 True 4.27 정수영 수정
+async def create_content(device_ref, device_id : str, image_url :str, is_emergency: bool = False):
     content_ref = device_ref.collection("contents").document()
     content_ref.set({
         "device_id": device_id,
@@ -21,7 +21,7 @@ async def create_content(device_ref, device_id : str, image_url :str):
         "created_at": datetime.utcnow().isoformat(),
         "question_text": "",
         "gpt_response": "",
-        "is_emergency": False
+        "is_emergency": is_emergency
     })
     return content_ref
 

@@ -1,9 +1,13 @@
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, Body
 from fastapi.responses import StreamingResponse
 import io
 from services.hw_services.device_service import get_device_by_id, create_content, save_description_to_firestore
 from services.hw_services.storage_service import upload_image_to_firebase
 from services.hw_services.auto_describe_service import generate_auto_description
+from services.hw_services.emergency_service import create_emergency
+from typing import Dict
+from services.hw_services.emergency_img_service import handle_emergency_image
+
 
 router = APIRouter(tags=["Hardware"])
 
@@ -37,3 +41,42 @@ async def auto_describe(device_id : str = Form(...), image : UploadFile = File(.
         media_type="audio/mpeg",
         headers={"Content-Disposition" : "inline; filename = description.mp3"}
     )
+
+@router.post("/get_emergency_id")
+async def get_emergency_id(request: Dict[str, str] = Body(...)):
+    device_id = request.get("device_id")
+    if not device_id:
+        return {"status": "error", "message": "device_id is required"}
+    
+    try:
+        emergency_id = await create_emergency(device_id)
+        return {
+            "status": "success",
+            "emergency_id": emergency_id
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
+
+@router.post("/emergency_img")
+async def emergency_img(
+    device_id: str = Form(...),
+    emergency_id: str = Form(...),
+    image: UploadFile = File(...)
+):
+    """
+    비상 상황 이미지 전송 및 contents 저장 API
+    """
+    image_url = await upload_image_to_firebase(image)
+
+    final_emergency_id = await handle_emergency_image(device_id, emergency_id, image_url)
+
+    return {
+        "status": "success",
+        "emergency_id": final_emergency_id
+    }
+        
+        
