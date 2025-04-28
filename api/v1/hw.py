@@ -77,9 +77,7 @@ async def post_gps_location(
     """
     await save_gps_location(device_id, lat, lon)
 
-    return JSONResponse(content={"status": "success"})
-        headers={"Content-Disposition" : "inline; filename = description.mp3"}
-    )
+    return JSONResponse(content={"status": "success"}, headers={"Content-Disposition" : "inline; filename = description.mp3"})
 
 @router.post("/get_emergency_id")
 async def get_emergency_id(request: Dict[str, str] = Body(...)):
