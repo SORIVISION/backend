@@ -15,10 +15,15 @@ async def handle_user_prompt(device_id: str, image_url : str, prompt: str) -> by
     device_ref = await get_device_by_id(device_id)
 
     #2. OCR 실행하여 이미지 속 텍스트 추출
-    ocr_result  = await extract_text_from_image(image_url)
+    ocr_result = None
+    #ocr_result  = await extract_text_from_image(image_url)
 
     # 3. Firestore에 콘텐츠 문서 생성
-    question_text = f"{prompt}\n이미지 내 텍스트: {ocr_result}"
+    if ocr_result :
+        question_text = f"질문 : {prompt} \n이미지 내 텍스트: {ocr_result}"
+    else :
+        question_text = f"질문 : {prompt}"
+        
     content_ref = await create_content(
         device_ref=device_ref,
         device_id=device_id,
@@ -27,7 +32,7 @@ async def handle_user_prompt(device_id: str, image_url : str, prompt: str) -> by
     )
 
     # 4. GPT 생성
-    gpt_response = await generate_description_from_prompt(question_text)
+    gpt_response = await generate_description_from_prompt(question_text, image_url)
 
     # 5. GPT 결과 저장
     await save_description_to_firestore(
