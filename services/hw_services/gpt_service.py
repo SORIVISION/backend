@@ -35,7 +35,8 @@ async def generate_description_from_image_url(image_url: str) -> str:
 → 버스 정류장에 사람들이 줄을 서 있어요. 앞에 버스 한 대가 멈춰 있고, 몇 명은 가방을 메고 있어요. 날씨는 맑고 밝아요. 주변은 도시 거리 분위기예요.
 """
     
-    gpt_response = await get_gpt_response(system_prompt, "", image_url)
+    #gpt_response = await get_gpt_response(system_prompt, "", image_url)
+    gpt_response = "auto description"
     
     return gpt_response
 
@@ -74,6 +75,6 @@ async def generate_description_from_prompt(prompt_text: str, image_url : str) ->
 → 유통기한이 3일 남았어요. 포장지에 5월 1일이라고 적혀 있어요. 오늘이 4월 28일이니까 며칠 여유가 있어요. 날짜 말고는 다른 글씨는 흐릿해요.
 """
     
-    gpt_response = await get_gpt_response(system_prompt, prompt_text, image_url)
-    
+    #gpt_response = await get_gpt_response(system_prompt, prompt_text, image_url)
+    gpt_response = "prompt description"
     return gpt_response
