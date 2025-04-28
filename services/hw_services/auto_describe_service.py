@@ -16,7 +16,7 @@ async def generate_auto_description(content_ref, image_url : str ) -> bytes:
     #2. Firestore의 contents 문서에 설명 업데이트
     await save_description_to_firestore(     
         content_ref,
-        question_text="이 이미지에 대한 설명을 생성해주세요.",
+        question_text="",
         gpt_response=description,
         is_emergency=False  # 현재 단계에서는 고정
     )

@@ -1,5 +1,6 @@
 import io
 import asyncio
+from core.tts import get_tts
 
 async def generate_tts(text: str) -> bytes:
     """
@@ -9,4 +10,7 @@ async def generate_tts(text: str) -> bytes:
     await asyncio.sleep(0.1)
     dummy_mp3 = io.BytesIO()
     dummy_mp3.write(b"This is a dummy mp3 file generated from text: " + text.encode())
+    
+    #status, mp3 = get_tts(text)
+    
     return dummy_mp3.getvalue()
