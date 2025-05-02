@@ -19,13 +19,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Create .env file from secret
-        run: echo "${{ secrets.ENV }}" > ~/.env
 
-      - name: Create firebase.json from secret
-        run: echo "${{ secrets.FIREBASE_CRD }}" > ./firebase.json
-      
-    
       - name: Checkout
         uses: actions/checkout@v2
       
@@ -68,6 +62,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Create .env file from secret
+        run: touch ~/.env
+      - name: Create .env file from secret
+        run: echo "${{ secrets.ENV }}" > ~/.env
+      
       
       - name: Docker run
         run: |
