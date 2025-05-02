@@ -62,12 +62,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
-
-      - name: Create .env file from secret
-        run: touch ~/.env
-      - name: Create .env file from secret
-        run: echo "${{ secrets.ENV }}" > ~/.env
-      
       
       - name: Docker run
         run: |
