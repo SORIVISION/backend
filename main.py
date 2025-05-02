@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from api.v1 import v1
-from dotenv import load_dotenv
-load_dotenv()
 
 app = FastAPI()
 
