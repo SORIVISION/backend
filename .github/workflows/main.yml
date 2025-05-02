@@ -66,6 +66,6 @@ jobs:
       - name: Docker run
         run: |
           docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker run -d -p 80:80 --name sorivision --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -p 80:80 --name sorivision ${{ env.DOCKER_IMAGE }}:latest
           docker cp ~/.env ${{ env.NAME }}:code/.env
 
