@@ -19,6 +19,13 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Create .env file from secret
+        run: echo "${{ secrets.ENV }}" > ./.env
+
+      - name: Create firebase.json from secret
+        run: echo "${{ secrets.FIREBASE_CRD }}" > ./firebase.json
+      
+    
       - name: Checkout
         uses: actions/checkout@v2
       
@@ -41,13 +48,6 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
           # 우리가 방금 복사해서 setting secrets 에 붙여줬던 token 이다. 이름을 기억해 넣어주자.
           # 우리의 ghcr.io 에 접근하기 위함이다.
-
-      - name: Create .env file from secret
-        run: echo "${{ secrets.ENV }}" > ./.env
-
-      - name: Create firebase.json from secret
-        run: echo "${{ secrets.FIREBASE_CRD }}" > ./firebase.json
-      
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
