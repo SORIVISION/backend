@@ -67,5 +67,5 @@ jobs:
       
       - name: Docker run
         run: |
-          docker run -d -p 80:80 --name sorivision ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -p 80:80 --env-file ~/.env --name sorivision ${{ env.DOCKER_IMAGE }}:latest
 
