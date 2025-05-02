@@ -5,6 +5,8 @@ from models.client_models import DeviceInfoResponse
 from models.client_models import GPSTraceResponse
 from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
+from services.client_services.emergency_service import get_emergency_image_urls
+from typing import List
 
 router = APIRouter(tags=["Client"])
 
@@ -33,3 +35,22 @@ async def gps_trace(device_id: str = Query(..., description="조회할 디바이
     """
     gps_data =  await get_recent_gps_trace(device_id)
     return {"gps": gps_data}
+
+@router.get("/get_emergency_imglist")
+async def get_emergency_imglist(
+    device_id: str = Query(..., description="디바이스 ID"),
+    emergency_id: str = Query(..., description="비상 상황 ID")
+):
+    """
+    비상 상황의 이미지 URL 목록을 조회하는 API
+    """
+    try:
+        image_urls = await get_emergency_image_urls(device_id, emergency_id)
+        return {
+            "image_urls": image_urls
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
