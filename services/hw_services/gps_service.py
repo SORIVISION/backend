@@ -21,7 +21,7 @@ async def save_gps_location(device_id: str, lat: float, lon: float):
     location_ref.set({
         "lat" : lat,
         "lon" : lon,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow()
     })
 
     return True
