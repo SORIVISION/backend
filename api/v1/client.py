@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Query
-from models.client_models import ContentDetailResponse
+from typing import List
+from models.client_models import ContentDetailResponse, DeviceInfoResponse, GPSTraceResponse, PreviewImageResponse, PreviewImageItem
 from services.client_services.content_detail_service import get_content_detail
-from models.client_models import DeviceInfoResponse
-from models.client_models import GPSTraceResponse
 from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
-from typing import List
+from services.client_services.get_preview_images import get_preview_images
 
 router = APIRouter(tags=["Client"])
 
@@ -54,3 +53,14 @@ async def get_emergency_imglist(
             "status": "error",
             "message": str(e)
         }
+
+@router.get("/get_preview_images", response_model=PreviewImageResponse)
+async def get_preview_images_api(
+    device_id: str = Query(..., description="디바이스 ID"),
+    id_list: List[str] = Query(..., description="콘텐츠 ID 리스트")
+):
+    result = await get_preview_images(device_id, id_list)
+
+    return PreviewImageResponse(
+        contents_list_image=[PreviewImageItem(**item) for item in result]
+    )

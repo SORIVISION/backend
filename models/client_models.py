@@ -22,3 +22,10 @@ class GPSItem(BaseModel):
 
 class GPSTraceResponse(BaseModel):
     gps : List[GPSItem]
+
+class PreviewImageItem(BaseModel):
+    id: str
+    image_url: str
+
+class PreviewImageResponse(BaseModel):
+    contents_list_image: List[PreviewImageItem]
