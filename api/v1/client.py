@@ -6,6 +6,8 @@ from models.client_models import GPSTraceResponse
 from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
+from services.client_services.push_emergency_service import send_emergency_push
+
 from typing import List
 
 router = APIRouter(tags=["Client"])
@@ -54,3 +56,13 @@ async def get_emergency_imglist(
             "status": "error",
             "message": str(e)
         }
+
+@router.post("/push/emergency")
+async def push_emergency(
+    device_id: str = Body(..., embed=True),
+    emergency_id: str = Body(..., embed=True)
+):
+    """
+    FCM HTTP v1 기반 푸시 알림 전송 API
+    """
+    return await send_emergency_push(device_id, emergency_id)
