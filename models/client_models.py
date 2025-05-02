@@ -1,6 +1,14 @@
 from pydantic import BaseModel
-from typing import List
 from datetime import datetime
+from typing import List
+
+
+class ContentDetailResponse(BaseModel):
+    lat: float
+    lon: float
+    question: str
+    gpt_response: str
+    created_at: datetime
 
 class DeviceInfoResponse(BaseModel):
     user_name: str
