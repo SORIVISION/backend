@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create .env file from secret
-        run: echo "${{ secrets.ENV }}" > ./.env
+        run: echo "${{ secrets.ENV }}" > /.env
 
       - name: Create firebase.json from secret
         run: echo "${{ secrets.FIREBASE_CRD }}" > ./firebase.json
