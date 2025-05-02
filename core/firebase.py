@@ -1,9 +1,6 @@
 import os
-from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
-
-load_dotenv()
 
 #인증 키 경로 불러오기
 cred_path = os.getenv("FIREBASE_CREDENTIAL_PATH")
