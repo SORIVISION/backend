@@ -43,10 +43,10 @@ jobs:
           # 우리의 ghcr.io 에 접근하기 위함이다.
 
       - name: Create .env file from secret
-        run: echo "${{ secrets.ENV }}" > .env
+        run: echo "${{ secrets.ENV }}" > ./.env
 
       - name: Create firebase.json from secret
-        run: echo "${{ secrets.FIREBASE_CRD }}" > firebase.json
+        run: echo "${{ secrets.FIREBASE_CRD }}" > ./firebase.json
       
       - name: Build and push
         id: docker_build
