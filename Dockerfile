@@ -1,7 +1,5 @@
 FROM python:3.13.2
 
-COPY .env /code/.env
-
 WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
