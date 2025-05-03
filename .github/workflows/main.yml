@@ -68,5 +68,5 @@ jobs:
       - name: Docker run
         run: |
           docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker run -d -p 80:80 -v ~/shared:/shared --env-file ~/.env --name sorivision ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -p 8000:8000 -v ~/shared:/shared --env-file ~/.env --name sorivision ${{ env.DOCKER_IMAGE }}:latest
 
