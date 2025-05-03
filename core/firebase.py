@@ -10,8 +10,7 @@ bucket_name = os.getenv("FIREBASE_BUCKET_NAME")
 if not firebase_admin._apps:
     cred = credentials.Certificate(cred_path)
     firebase_admin.initialize_app(cred, {
-        "storageBucket": os.getenv("FIREBASE_BUCKET_NAME")
-
+        "storageBucket": bucket_name
     }) 
 
 db = firestore.client()
