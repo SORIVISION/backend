@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Body
 from models.client_models import ContentDetailResponse
 from services.client_services.content_detail_service import get_content_detail
 from models.client_models import DeviceInfoResponse
 from models.client_models import GPSTraceResponse
+from models.client_models import EmergencyPushRequest
 from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
@@ -30,12 +31,12 @@ async def device_info(device_id: str = Query(..., description="디바이스 ID")
 
     return DeviceInfoResponse(**result)
 
-@router.get("/gps_trace", response_model= GPSTraceResponse)
+@router.get("/gps_trace", response_model=GPSTraceResponse)
 async def gps_trace(device_id: str = Query(..., description="조회할 디바이스 ID")):
     """
     보호자가 특정 device_id에 대해 최근 1시간 이내 GPS 위치 타임라인을 조회
     """
-    gps_data =  await get_recent_gps_trace(device_id)
+    gps_data = await get_recent_gps_trace(device_id)
     return {"gps": gps_data}
 
 @router.get("/get_emergency_imglist")
@@ -58,11 +59,16 @@ async def get_emergency_imglist(
         }
 
 @router.post("/push/emergency")
-async def push_emergency(
-    device_id: str = Body(..., embed=True),
-    emergency_id: str = Body(..., embed=True)
-):
+async def push_emergency(request: EmergencyPushRequest):
     """
     FCM HTTP v1 기반 푸시 알림 전송 API
+    
+    Args:
+        request (EmergencyPushRequest): 푸시 알림 요청 데이터
+            - device_id: 디바이스 ID
+            - emergency_id: 비상 상황 ID
     """
-    return await send_emergency_push(device_id, emergency_id)
+    return await send_emergency_push(
+        device_id=request.device_id,
+        emergency_id=request.emergency_id
+    )
