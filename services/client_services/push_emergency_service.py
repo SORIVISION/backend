@@ -39,21 +39,10 @@ async def send_emergency_push(device_id: str, emergency_id: str):
         raise HTTPException(status_code=404, detail="디바이스를 찾을 수 없습니다.")
     
     device_data = device_doc[0].to_dict()
-    guardian_id = device_data.get('guardian_id')
-    
-    if not guardian_id:
-        raise HTTPException(status_code=404, detail="디바이스에 연결된 보호자가 없습니다.")
-    
-    # 보호자의 FCM 토큰 조회
-    guardian_doc = db.collection('guardians').document(guardian_id).get()
-    if not guardian_doc.exists:
-        raise HTTPException(status_code=404, detail="보호자 정보를 찾을 수 없습니다.")
-    
-    guardian_data = guardian_doc.to_dict()
-    fcm_token = guardian_data.get('fcm_token')
+    fcm_token = device_data.get('fcm_token')
     
     if not fcm_token:
-        raise HTTPException(status_code=400, detail="보호자의 FCM 토큰이 등록되지 않았습니다.")
+        raise HTTPException(status_code=400, detail="디바이스의 FCM 토큰이 등록되지 않았습니다.")
 
     # FCM 메시지 전송
     access_token = get_access_token()
