@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 
 class ContentDetailResponse(BaseModel):
@@ -22,3 +22,6 @@ class GPSItem(BaseModel):
 
 class GPSTraceResponse(BaseModel):
     gps : List[GPSItem]
+
+class CalendarInfoResponse(BaseModel):
+    contents_list_day: List[List[Union[str, int]]]
