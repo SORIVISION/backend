@@ -8,6 +8,7 @@ from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
 from services.client_services.push_emergency_service import send_emergency_push
+from services.client_services.login_service import login_and_save_token
 
 from typing import List
 
@@ -72,3 +73,7 @@ async def push_emergency(request: EmergencyPushRequest):
         device_id=request.device_id,
         emergency_id=request.emergency_id
     )
+    
+@router.post("/login")
+async def login_device(device_id: str = Body(..., embed=True), fcm_token: str = Body(..., embed=True)):
+    return await login_and_save_token(device_id, fcm_token)
