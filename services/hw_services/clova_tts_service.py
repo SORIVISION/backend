@@ -9,6 +9,6 @@ async def generate_tts(text: str) -> bytes:
     """
     await asyncio.sleep(0.1)
 
-    status, mp3 = get_tts(text)
+    status, mp3 = await get_tts(text)
     
     return mp3
