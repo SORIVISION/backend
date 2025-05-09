@@ -9,7 +9,7 @@ from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
 from services.client_services.push_emergency_service import send_emergency_push
 from services.client_services.login_service import login_and_save_token
-
+from services.client_services.preview_image_service import get_preview_images
 from typing import List
 
 router = APIRouter(tags=["Client"])
@@ -77,3 +77,12 @@ async def push_emergency(request: EmergencyPushRequest):
 @router.post("/login")
 async def login_device(device_id: str = Body(..., embed=True), fcm_token: str = Body(..., embed=True)):
     return await login_and_save_token(device_id, fcm_token)
+    
+@router.get("/get_preview_images")
+async def get_preview_images_api(
+    device_id: str = Query(..., description="디바이스 ID"),
+    date: str = Query(..., description="조회한 날짜 (YYYY-MM-DD)")
+):
+    result = await get_preview_images(device_id, date)
+
+    return result
