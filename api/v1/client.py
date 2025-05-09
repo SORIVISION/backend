@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from models.client_models import ContentDetailResponse, DeviceInfoResponse, GPSTraceResponse, CalendarInfoResponse
+from models.client_models import ContentDetailResponse, DeviceInfoResponse, GPSTraceResponse, CalendarByDayResponse
 from services.client_services.content_detail_service import get_content_detail
 from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
@@ -64,12 +64,12 @@ async def get_preview_images_api(
 
     return result
 
-@router.get("/get_calendar_info", response_model=CalendarInfoResponse)
+@router.get("/get_calendar_info", response_model=CalendarByDayResponse)
 async def get_calendar_info_api(
     device_id: str = Query(..., description="디바이스 ID"),
     year: int = Query(..., description="연도"),
     month : int = Query(..., description="월")
 ):
     result = await get_calendar_info(device_id, year, month)
-    return CalendarInfoResponse(**result)
+    return CalendarByDayResponse(**result)
 

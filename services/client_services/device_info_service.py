@@ -11,7 +11,7 @@ async def get_device_info(device_id: str) -> dict:
     if not doc.exists:
         raise HTTPException(status_code=404, detail="해당 디바이스를 찾을 수 없습니다")
     
-    data =  doc.to_dict()
+    data =  doc.to_dict() 
 
     return {
         "user_name": data.get("user_name"),
