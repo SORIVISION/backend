@@ -28,8 +28,8 @@ async def get_gpt_response(sys_prompt, user_prompt, image_url) :
     response = client.chat.completions.create(
         model = os.getenv("OPENAI_API_MODEL_NAME"),
         messages = messages,
-        max_tokens = os.getenv("OPENAI_API_MAX_TOKENS"),
-        temperature = os.getenv("OPENAI_API_TEMPERATURE")
+        max_tokens = int(os.getenv("OPENAI_API_MAX_TOKENS")),
+        temperature = float(os.getenv("OPENAI_API_TEMPERATURE"))
     )
 
     return response.choices[0].message.content
