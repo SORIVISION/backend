@@ -28,7 +28,6 @@ async def handle_user_prompt(device_id: str, image_url : str, prompt: str) -> by
         device_ref=device_ref,
         device_id=device_id,
         image_url=image_url,
-        question_text=question_text,
     )
 
     # 4. GPT 생성
