@@ -4,13 +4,12 @@ from datetime import datetime
 
 #1. 디바이스 문서 참조 얻기
 async def get_device_by_id(device_id : str):
-    device_ref = get_device_ref(device_id)
-    doc = device_ref.get()
+    doc = get_device_ref(device_id)
 
     if not doc.exists:
         raise HTTPException(status_code=404, detail="디바이스 없음")
     
-    return device_ref
+    return doc
 
 #2. contents 문서 생성 (상황설명문/ 사용자 프롬프트 공통 )
 async def create_content(

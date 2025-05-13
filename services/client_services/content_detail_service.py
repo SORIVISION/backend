@@ -1,8 +1,9 @@
 from core.firebase import db
 from fastapi import HTTPException
+from core.firebase_utils import get_contents_ref
 
 async def get_content_detail(device_id: str, contents_id: str) -> dict:
-    doc_ref = db.collection("devices").document(device_id).collection("contents").document(contents_id)
+    doc_ref = get_contents_ref(device_id).document(contents_id)
     doc = doc_ref.get()
 
     if not doc.exists:

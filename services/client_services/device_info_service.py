@@ -5,8 +5,7 @@ async def get_device_info(device_id: str) -> dict:
     """
     device_id 기반으로 device 정보 가져오기
     """
-    device_ref = get_device_ref(device_id)
-    doc = device_ref.get()
+    doc = get_device_ref(device_id)
 
     if not doc.exists:
         raise HTTPException(status_code=404, detail="해당 디바이스를 찾을 수 없습니다")

@@ -4,7 +4,7 @@ def get_device_ref(device_id : str):
     """
     디바이스 document 참조 변환
     """
-    return db.collection("devices").where("device_id", "==", device_id).get()[0].reference
+    return db.collection("devices").where("device_id", "==", device_id).get()[0]
 
 def get_contents_ref(device_id : str):
     """
