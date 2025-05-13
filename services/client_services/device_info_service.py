@@ -3,7 +3,7 @@ from fastapi import HTTPException
 
 async def get_device_info(device_id: str) -> dict:
     docs =  db.collection("devices").where("device_id","==", device_id).limit(1).stream()
-    docs_list =  list(docs)
+    docs_list = list(docs)
 
     if not docs_list:
         raise HTTPException(status_code=404, detail="해당 디바이스를 찾을 수 없습니다")

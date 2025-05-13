@@ -9,7 +9,11 @@ async def get_calendar_info(device_id: str, year: int, month: int) -> Dict[str, 
     contents를 day 기준으로 묶어 반환하는 API
     ex) {"3": ["id1", "id2"], "5": ["id3"]}
     """
-    contents_ref = db.collection("devices").document(device_id).collection("contents")
+    devices = db.collection("devices").where("device_id", "==",device_id).limit(1).stream()
+    docs_list = list(devices)
+    device_ref = docs_list[0].reference
+    
+    contents_ref = device_ref.collection("contents")
     docs = contents_ref.stream()
 
     contents_by_day = defaultdict(list)
@@ -22,7 +26,7 @@ async def get_calendar_info(device_id: str, year: int, month: int) -> Dict[str, 
         if not created_at or is_emergency:
             continue
 
-        dt = datetime.fromisoformat(created_at)
+        dt = datetime.fromisoformat(str(created_at).split("T")[0])
         if dt.year == year and dt.month == month:
             contents_by_day[str(dt.day)].append(doc.id)
 

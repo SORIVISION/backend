@@ -3,4 +3,5 @@ __pycache__/
 .venv/
 venv/
 .vscode/
+tests/
 firebase_key.json
