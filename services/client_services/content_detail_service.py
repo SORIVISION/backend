@@ -10,10 +10,6 @@ async def get_content_detail(device_id: str, contents_id: str) -> dict:
     device_ref = docs_list[0].reference
     
     doc = device_ref.collection("contents").document(contents_id)
-
-    if not doc.exists:
-        raise HTTPException(status_code=404, detail="해당 콘텐츠를 찾을 수 없습니다")
-
     data = doc.to_dict()
 
     return {

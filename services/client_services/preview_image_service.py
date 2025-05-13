@@ -22,7 +22,7 @@ async def get_preview_images(device_id: str, date: str) -> dict:
         if not created_at:
             continue
 
-        content_date = created_at.split("T")[0]
+        content_date = str(created_at).split("T")[0]
 
         if content_date != date:
             continue
