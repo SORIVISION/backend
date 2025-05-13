@@ -9,8 +9,9 @@ async def get_content_detail(device_id: str, contents_id: str) -> dict:
         raise HTTPException(status_code=404, detail="디바이스가 존재하지 않습니다")
     device_ref = docs_list[0].reference
     
-    doc = device_ref.collection("contents").document(contents_id).stream()[0]
-    data = doc.to_dict()
+    doc = device_ref.collection("contents").document(contents_id)
+    
+    data = doc.get().to_dict()
 
     return {
         "lat": data.get("lat", 0.0),
