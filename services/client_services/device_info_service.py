@@ -1,16 +1,14 @@
-from core.firebase_utils import get_device_ref
+from core.firebase import db
 from fastapi import HTTPException
 
 async def get_device_info(device_id: str) -> dict:
-    """
-    device_id 기반으로 device 정보 가져오기
-    """
-    doc = get_device_ref(device_id)
+    docs =  db.collection("devices").where("device_id","==", device_id).limit(1).stream()
+    docs_list =  list(docs)
 
-    if not doc.exists:
+    if not docs_list:
         raise HTTPException(status_code=404, detail="해당 디바이스를 찾을 수 없습니다")
     
-    data =  doc.to_dict() 
+    data =  docs_list[0].to_dict()
 
     return {
         "user_name": data.get("user_name"),
