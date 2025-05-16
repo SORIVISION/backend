@@ -43,5 +43,5 @@ async def save_description_to_firestore(
         "question_text": question_text,
         "gpt_response": gpt_response,
         "is_emergency": is_emergency,
-        "updated_at": datetime.utcnow().isoformat() + timedelta(hours=9)
+        "updated_at": str(datetime.utcnow().isoformat() + timedelta(hours=9))
     })

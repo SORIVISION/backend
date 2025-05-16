@@ -25,7 +25,7 @@ async def get_recent_gps_trace(device_id: str) -> List[Dict]:
         gps_list.append({
             "lat" : data.get("lat"),
             "lon" : data.get("lon"),
-            "timestamp" : data.get("timestamp") + timedelta(hours=9)
+            "timestamp" : str(data.get("timestamp") + timedelta(hours=9))
         })
 
     return gps_list
