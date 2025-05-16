@@ -25,3 +25,7 @@ class GPSTraceResponse(BaseModel):
 
 class CalendarByDayResponse(BaseModel):
     contents_by_day: Dict[str, List[str]]
+    
+class EmergencyPushRequest(BaseModel):
+    device_id: str
+    emergency_id: str
