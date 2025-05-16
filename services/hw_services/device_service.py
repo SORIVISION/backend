@@ -1,7 +1,8 @@
 from core.firebase import db
 from fastapi import HTTPException
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
+
 
 #1. 디바이스 문서 참조 얻기
 async def get_device_by_id(device_id : str):
@@ -42,5 +43,5 @@ async def save_description_to_firestore(
         "question_text": question_text,
         "gpt_response": gpt_response,
         "is_emergency": is_emergency,
-        "updated_at": datetime.utcnow().isoformat()
+        "updated_at": datetime.utcnow().isoformat() + timedelta(hours=9)
     })
