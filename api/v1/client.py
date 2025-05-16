@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query, Body
-from models.client_models import ContentDetailResponse, DeviceInfoResponse, GPSTraceResponse
+from models.client_models import ContentDetailResponse, DeviceInfoResponse, GPSTraceResponse, EmergencyPushRequest
 from models.client_models import CalendarByDayResponse
 from services.client_services.content_detail_service import get_content_detail
 from services.client_services.device_info_service import get_device_info
