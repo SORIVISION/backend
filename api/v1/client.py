@@ -6,6 +6,7 @@ from services.client_services.device_info_service import get_device_info
 from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
 from services.client_services.preview_image_service import get_preview_images
+from services.client_services.get_contents_service import get_total_contents
 from services.client_services.get_calendar_info import get_calendar_info
 from typing import List
 
@@ -62,6 +63,16 @@ async def get_preview_images_api(
     date: str = Query(..., description="조회한 날짜 (YYYY-MM-DD)")
 ):
     result = await get_preview_images(device_id, date)
+
+    return result
+
+
+@router.get("/get_all_contents_data")
+async def get_all_contents_api(
+    device_id: str = Query(..., description="디바이스 ID"),
+    date: str = Query(..., description="조회한 날짜 (YYYY-MM-DD)")
+):
+    result = await get_total_contents(device_id, date)
 
     return result
 
