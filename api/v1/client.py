@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Body
 from models.client_models import ContentDetailResponse, DeviceInfoResponse, GPSTraceResponse
 from models.client_models import CalendarByDayResponse
 from services.client_services.content_detail_service import get_content_detail
@@ -7,6 +7,8 @@ from services.client_services.gps_trace_service import get_recent_gps_trace
 from services.client_services.emergency_service import get_emergency_image_urls
 from services.client_services.preview_image_service import get_preview_images
 from services.client_services.get_calendar_info import get_calendar_info
+from services.client_services.push_emergency_service import send_emergency_push
+from services.client_services.login_service import login_and_save_token
 from typing import List
 
 router = APIRouter(tags=["Client"])
@@ -73,3 +75,31 @@ async def get_calendar_info_api(
 ):
     result = await get_calendar_info(device_id, year, month)
     return CalendarByDayResponse(**result)
+
+@router.post("/push/emergency")
+async def push_emergency(request: EmergencyPushRequest):
+    """
+    FCM HTTP v1 기반 푸시 알림 전송 API
+    
+    Args:
+        request (EmergencyPushRequest): 푸시 알림 요청 데이터
+            - device_id: 디바이스 ID
+            - emergency_id: 비상 상황 ID
+    """
+    return await send_emergency_push(
+        device_id=request.device_id,
+        emergency_id=request.emergency_id
+    )
+    
+@router.post("/login")
+async def login_device(device_id: str = Body(..., embed=True), fcm_token: str = Body(None, embed=True)):
+    return await login_and_save_token(device_id, fcm_token)
+    
+@router.get("/get_preview_images")
+async def get_preview_images_api(
+    device_id: str = Query(..., description="디바이스 ID"),
+    date: str = Query(..., description="조회한 날짜 (YYYY-MM-DD)")
+):
+    result = await get_preview_images(device_id, date)
+
+    return result
