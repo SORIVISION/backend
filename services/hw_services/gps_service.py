@@ -1,6 +1,6 @@
 from core.firebase import db
 from fastapi import HTTPException
-from datetime import datetime
+from datetime import datetime, timedelta
 
 async def save_gps_location(device_id: str, lat: float, lon: float):
     """
@@ -19,9 +19,10 @@ async def save_gps_location(device_id: str, lat: float, lon: float):
     #2. 위치 정보 저장
     location_ref = device_ref.collection("locations").document()
     location_ref.set({
+        "device_id": device_id,
         "lat" : lat,
-        "lon" : lon,
-        "timestamp": datetime.utcnow()
+        "lng" : lon,
+        "recorded_at": datetime.utcnow() + timedelta(hours=9)
     })
 
     return True
