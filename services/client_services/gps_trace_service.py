@@ -9,6 +9,8 @@ async def get_recent_gps_trace(device_id: str) -> List[Dict]:
     
     docs = db.collection("devices").where("device_id", "==",device_id).limit(1).stream()
     docs_list = list(docs)
+    if not docs_list :
+        return []
     device_ref = docs_list[0].reference
     
     now = datetime.utcnow()
