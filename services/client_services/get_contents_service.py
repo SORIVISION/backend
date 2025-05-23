@@ -26,7 +26,7 @@ async def get_total_contents(device_id : str, date : str) -> List :
 
         content_date = c_split[0]
 
-        if content_date != date:
+        if content_date != date or data.get("is_emergency"):
             continue
 
         out_dict["content_id"] = doc.id
