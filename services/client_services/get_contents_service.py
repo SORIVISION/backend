@@ -9,9 +9,6 @@ async def get_total_contents(device_id : str, date : str) -> List :
     contents_ref = device_ref.collection("contents")
     docs = contents_ref.stream()
 
-    ids = []
-    urls = []
-    
     out = []
 
     for doc in docs:
