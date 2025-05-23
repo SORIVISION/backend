@@ -25,7 +25,7 @@ async def create_content(
     content_ref.set({
         "device_id": device_id,
         "image_url": image_url,
-        "created_at": datetime.utcnow().isoformat(),
+        "created_at": (datetime.utcnow() + datetime.timedelta(hours=9)).isoformat(),
         "question_text": "",
         "gpt_response": "",
         "is_emergency": is_emergency
