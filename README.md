@@ -29,20 +29,27 @@ ___
 
 ## Project Motivation
 
-### 1. 
+### 1. “Uncomfortable” traditional solutions
+ - Traditonal solutions(e.g. braille, footpath) are "uncomfortable".
+ - Braille is difficult to learn, Footpath is unmanaged...
 
-### 2. 
+### 2. Related Works
+ - To address the problems with these “traditional solutions,” several wearable devices were proposed.
+ - Ask Envision(2024), BeMyEyes(2024), NuEyes(2025) ...
+ - However, all of the previous research was focused on solutions for the visually impaired, and there was no platform that resonated with caregivers.
 
 |  | **Realtime Inference** | **Wearable Device**  | **Realtime hazard detection** | **Provides Description of situation** | **Monitoring Application** |
 |---|---|---|---|---|---|
-|Existing technologies| yes | yes | **no** | **yes(limited)** | **no** |
+|Related Works| yes | yes | **no** | **yes(limited)** | **no** |
 | **SORIVISION** | yes | yes | **yes** | **yes** | **yes** |
 ---
 
 ## Implementation
 
 ### 1. Overall System
+![그림1](https://github.com/user-attachments/assets/a99533c6-b54d-49da-9b1e-ae1761396ab2)
 
+### 2. ...
 
 ---
 
