@@ -1,4 +1,5 @@
 from firebase_admin import firestore
+from client_services.push_emergency_service import send_emergency_push
 from datetime import datetime
 
 async def create_emergency(device_id: str) -> str:
@@ -40,5 +41,9 @@ async def create_emergency(device_id: str) -> str:
 
     emergency_ref = device_ref.collection("emergency").document()
     emergency_ref.set(emergency_data)
+    
+    emergency_id = emergency_ref.id
+    
+    res = await send_emergency_push(device_id=device_id, emergency_id=emergency_id)
 
-    return emergency_ref.id
+    return emergency_id
