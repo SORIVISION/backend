@@ -1,5 +1,5 @@
 from firebase_admin import firestore
-from client_services.push_emergency_service import send_emergency_push
+from services.client_services.push_emergency_service import send_emergency_push
 from datetime import datetime
 
 async def create_emergency(device_id: str) -> str:
